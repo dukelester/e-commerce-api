@@ -31,4 +31,20 @@ def get_application():
 
 app = get_application()
 
+@app.on_event("startup")
+async def startup():
+    print("app started")
 
+
+@app.on_event("shutdown")
+async def shutdown():
+    print("SHUTDOWN")
+
+
+app.add_middleware(
+        CORSMiddleware,
+        allow_origins=[str(origin) for origin in settings.BACKEND_CORS_ORIGINS],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )

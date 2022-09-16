@@ -2,6 +2,7 @@ alembic==1.8.1
 anyio==3.6.1
 arrow==1.2.3
 asyncpg==0.26.0
+bcrypt==4.0.0
 binaryornot==0.4.4
 certifi==2022.9.14
 chardet==5.0.0
@@ -23,6 +24,7 @@ Mako==1.2.2
 manage-fastapi==1.1.1
 MarkupSafe==2.1.1
 orjson==3.8.0
+passlib==1.7.4
 poyo==0.5.0
 prompt-toolkit==3.0.31
 psycopg2-binary==2.9.3

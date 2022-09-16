@@ -70,7 +70,7 @@ class CreateUser(CoreModel):
     
     class Config:
         orm_mode = True
-class userInDB(IDModelMixin, DateTimeModelMixin, UserBase):
+class UserInDB(IDModelMixin, DateTimeModelMixin, UserBase):
     """
     Add in id, created_at, updated_at, and user's password and salt
     """
