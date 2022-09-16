@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from .database import SessionLocal
 
+from users.api import controllers
 
 def get_db():
     db = SessionLocal()
@@ -24,8 +25,10 @@ def get_application():
     
     get_db()
    
-
+    _app.include_router(controllers.router)
     return _app
 
 
 app = get_application()
+
+
