@@ -1,6 +1,6 @@
 # backend
-
-This project was generated via [manage-fastapi](https://ycd.github.io/manage-fastapi/)! :tada:
+An E-commerce Backend APi under Fastapi , postgresql and sqlalchemy 
+! :tada:
 
 ## License
 
