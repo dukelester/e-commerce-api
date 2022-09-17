@@ -1,10 +1,11 @@
 import asyncio
-import pytest
 
-from backend.users.schemas import CreateUser, UserLogin
-from . import init_db
-from users.models import User
+import pytest
 from app.database import SessionLocal
+from backend.users.schemas import CreateUser, UserLogin
+from users.models import User
+from . import init_db
+
 db = SessionLocal()
 
 class TestApiEndpoints:
@@ -36,7 +37,7 @@ class TestApiEndpoints:
         assert 'value is not a valid email address' == res.json()['detail'][0]['msg']
     
     @pytest.mark.asyncio
-    async def test_user_create_wrong_username_format(self, client, init_db, create_new_user):
+    async def test_user_create_wrong_username_format(self, client, init_db):
         wrong_user = CreateUser(
             full_name="Wrong user",
             phone_number="073456082",
