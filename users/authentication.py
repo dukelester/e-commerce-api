@@ -3,7 +3,8 @@ import bcrypt
 from passlib.context import CryptContext
 from .schemas import JWTCredentials, JWTMeta, JWTPayload, UserInDB, UserpasswordUpdate
 from app.core.config import settings
-from jose import jwt
+import jwt
+
 
 password_context = CryptContext(schemes=['sha256_crypt',], deprecated="auto")
 
@@ -30,7 +31,7 @@ class Authenticate:
                                      audience:str = settings.JWT_AUDIENCE,
                                      expires_in:int = settings.ACCESS_TOKEN_EXPIRE_MINUTES
                                      ):
-        if not user or not isinstance(user, UserInDB):
+        if not user:
             return None
         jwt_meta = JWTMeta(
             aud=audience, iat= datetime.timestamp(datetime.now()),
@@ -43,7 +44,7 @@ class Authenticate:
             **jwt_meta.dict(),
             **jwt_credentials.dict()
         )
-        return jwt.encode(jwt_token_payload.dict(), secret_key, aligorithm=settings.JWT_ALGORITHM )
+        return jwt.encode(jwt_token_payload.dict(), secret_key)
     
    
   

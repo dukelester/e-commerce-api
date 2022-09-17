@@ -11,15 +11,15 @@ db = SessionLocal()
 def get_user_by_username(username: str):
     found_user = db.query(User).filter(User.username == username).first()
     print(username, found_user)
-    return found_user or False
+    return found_user
 
-async def get_user_by_phone_number(phone_number: str) -> UserInDB:
+async def get_user_by_phone_number(phone_number: str):
     found_user = await db.query(User).filter(User.phone_number == phone_number).first()
-    return found_user or False
+    return found_user
 
-async def get_user_by_email(email_address: EmailStr) -> UserInDB:
+async def get_user_by_email(email_address: EmailStr):
     found_user = await db.query(User).filter(User.email_address == email_address).first()
-    return found_user or False
+    return found_user
 
 
 async def create_user(new_user: CreateUser) -> UserInDB:
