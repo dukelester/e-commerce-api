@@ -27,6 +27,6 @@ def user_login(user: UserLogin):
             # print(token, 'TOKENEEEE',found_user)
             access_token = AccessToken(access_token=token, token_type='bearer')
             return { 'access_token': access_token }
-            # return UserPublic(found_user, access_token=access_token)
+            # return UserPublic.from_orm(**found_user.dict(), access_token=access_token)
         raise HTTPException( status_code=401, detail="Invalid password ")
-    raise HTTPException( status_code=400, detail="User with those credentials not found! ")
+    raise HTTPException( status_code=404, detail="User with those credentials not found! ")
