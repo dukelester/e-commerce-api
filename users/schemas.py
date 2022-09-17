@@ -1,8 +1,9 @@
 import string
 from typing import Optional
-
+from datetime import datetime, timedelta
 from app.schemas import CoreModel, DateTimeModelMixin, IDModelMixin
 from pydantic import  EmailStr, constr, validator
+from app.core.config import settings
 
 def validate_username(username: str):
     allowed = string.ascii_letters + string.digits + "-" + "_"
@@ -75,12 +76,18 @@ class UserInDB(IDModelMixin, DateTimeModelMixin, UserBase):
     Add in id, created_at, updated_at, and user's password and salt
     """
     password: constr(min_length=8, max_length=100)
-    hash_password: str
+    salt: str
     
     class Config:
         orm_mode = True
-    
+
+class AccessToken(CoreModel):
+    access_token: str
+    token_type: str
+
+
 class UserPublic(DateTimeModelMixin, UserBase):
+    access_token: Optional[AccessToken]
     class Config:
         orm_mode = True
 
@@ -93,9 +100,37 @@ class UserpasswordUpdate(CoreModel):
     Users can change their password
     """
     password: constr(min_length=8, max_length=100)
-    hash_password: str
+    salt: str
     
     class Config:
         orm_mode = True
 
     
+# JWT SCHEMAS
+
+class JWTMeta(CoreModel):
+    iss: str = "azepug.az"
+    aud: str = settings.JWT_AUDIENCE
+    iat: float = datetime.timestamp(datetime.now())
+    exp: float = datetime.timestamp(datetime.now() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES))
+    
+class JWTCredentials(CoreModel):
+    """How we'll identify users"""
+    sub: EmailStr
+    username: str
+    
+class JWTPayload(JWTMeta, JWTCredentials):
+    """
+    JWT Payload right before it's encoded - combine meta and username
+    """
+    pass
+    
+
+class UserLogin(CoreModel):
+    """ Users can only login with email andpassword """
+    username: str
+    password: constr(min_length=8, max_length=100)
+    
+    @validator("username", pre=True)
+    def validate_username(cls, username):
+        return validate_username(username)

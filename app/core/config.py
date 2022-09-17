@@ -34,6 +34,25 @@ class Settings(BaseSettings):
             path=f"/{values.get('POSTGRES_DB') or ''}",
         )
     
+    # JWT settings
+    JWT_SETTINGS: Optional[dict] = None
+    SECRET_KEY: str
+    JWT_ALGORITHM: str
+    ACCESS_TOKEN_EXPIRE_MINUTES: int
+    JWT_TOKEN_PREFIX: str
+    JWT_AUDIENCE: str
+    
+    @validator('JWT_SETTINGS', pre=True)
+    def validate_jwt_settings(cls, v: Optional[str], values: Optional[str]):
+        if isinstance(v, str):
+            return v
+        return {
+            "SECRET_KEY": values.get("SECRET_KEY"),
+            "JWT_ALGORITHM": values.get("JWT_ALGORITHM"),
+            "ACCESS_TOKEN_EXPIRE_MINUTES": values.get("ACCESS_TOKEN_EXPIRE_MINUTES"),
+            "JWT_TOKEN_PREFIX": values.get("JWT_TOKEN_PREFIX"),
+            "JWT_AUDIENCE": values.get("JWT_AUDIENCE")
+        }
 
     class Config:
         case_sensitive = True
